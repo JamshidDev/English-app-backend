@@ -1,6 +1,6 @@
 {
   "name": "easy-english",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Enterprise-grade monorepo backend for English Learning Telegram Mini App",
   "scripts": {
     "start:admin": "nest start admin",
