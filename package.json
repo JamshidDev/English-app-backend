@@ -1,0 +1,50 @@
+{
+  "name": "easy-english",
+  "version": "1.0.0",
+  "description": "Enterprise-grade monorepo backend for English Learning Telegram Mini App",
+  "scripts": {
+    "start:admin": "nest start admin",
+    "start:admin:dev": "nest start admin --watch",
+    "start:admin:debug": "nest start admin --debug --watch",
+    "start:client": "nest start client",
+    "start:client:dev": "nest start client --watch",
+    "start:client:debug": "nest start client --debug --watch",
+    "build": "nest build admin && nest build client",
+    "build:admin": "nest build admin",
+    "build:client": "nest build client",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:push": "drizzle-kit push",
+    "db:studio": "drizzle-kit studio"
+  },
+  "dependencies": {
+    "@nestjs/common": "^11.0.0",
+    "@nestjs/config": "^4.0.0",
+    "@nestjs/core": "^11.0.0",
+    "@nestjs/jwt": "^11.0.0",
+    "@nestjs/passport": "^11.0.0",
+    "@nestjs/platform-express": "^11.0.0",
+    "@nestjs/swagger": "^11.0.0",
+    "bcrypt": "^5.1.1",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.1",
+    "drizzle-orm": "^0.39.0",
+    "ioredis": "^5.4.2",
+    "passport": "^0.7.0",
+    "passport-jwt": "^4.0.1",
+    "pg": "^8.13.1",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.1",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@nestjs/cli": "^11.0.0",
+    "@nestjs/schematics": "^11.0.0",
+    "@types/bcrypt": "^5.0.2",
+    "@types/node": "^22.0.0",
+    "@types/passport-jwt": "^4.0.1",
+    "@types/pg": "^8.11.10",
+    "drizzle-kit": "^0.30.0",
+    "typescript": "^5.7.0"
+  }
+}
