@@ -42,4 +42,28 @@ jobs:
             npm run build
             npx drizzle-kit push --force
             pm2 reload ecosystem.config.js
-            echo "✅ Deploy completed!"
+            echo "Deploy completed!"
+
+  notify:
+    name: Telegram Notification
+    needs: [build, deploy]
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: Send Telegram notification
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_CHAT_ID }}
+          token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          format: markdown
+          message: |
+            *EasyEnglish CI/CD*
+
+            *Commit:* `${{ github.event.head_commit.message }}`
+            *Branch:* `${{ github.ref_name }}`
+            *Author:* ${{ github.actor }}
+
+            *Build:* ${{ needs.build.result == 'success' && '✅ Success' || '❌ Failed' }}
+            *Deploy:* ${{ needs.deploy.result == 'success' && '✅ Success' || needs.deploy.result == 'skipped' && '⏭ Skipped' || '❌ Failed' }}
+
+            [View Action](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
