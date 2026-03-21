@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <rect width="200" height="200" rx="40" fill="#58cc02"/>
+  <!-- Head -->
+  <ellipse cx="100" cy="110" rx="65" ry="60" fill="#78d92a"/>
+  <!-- Ears -->
+  <path d="M50 70 Q40 30 70 55" fill="#78d92a"/>
+  <path d="M150 70 Q160 30 130 55" fill="#78d92a"/>
+  <!-- Left eye white -->
+  <ellipse cx="75" cy="105" rx="25" ry="28" fill="white"/>
+  <!-- Right eye white -->
+  <ellipse cx="125" cy="105" rx="25" ry="28" fill="white"/>
+  <!-- Left pupil -->
+  <ellipse cx="80" cy="108" rx="12" ry="14" fill="#3c3c3c"/>
+  <!-- Right pupil -->
+  <ellipse cx="120" cy="108" rx="12" ry="14" fill="#3c3c3c"/>
+  <!-- Left eye shine -->
+  <ellipse cx="85" cy="102" rx="4" ry="5" fill="white"/>
+  <!-- Right eye shine -->
+  <ellipse cx="125" cy="102" rx="4" ry="5" fill="white"/>
+  <!-- Beak top -->
+  <ellipse cx="100" cy="135" rx="12" ry="8" fill="#ffc800"/>
+  <!-- Beak bottom -->
+  <ellipse cx="100" cy="140" rx="8" ry="6" fill="#ff9600"/>
+</svg>

@@ -1,12 +1,16 @@
 import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common';
 import { QuizzesRepository } from './repository/quizzes.repository';
+import { ScoresService } from '../scores/scores.service';
 import { GenerateQuizDto } from './dto/generate-quiz.dto';
 import { SubmitAnswerDto } from './dto/submit-answer.dto';
 import { QuizQuestion, QuizOption } from '@shared/database/schema/quizzes.schema';
 
 @Injectable()
 export class QuizzesService {
-  constructor(private readonly repo: QuizzesRepository) {}
+  constructor(
+    private readonly repo: QuizzesRepository,
+    private readonly scoresService: ScoresService,
+  ) {}
 
   async generate(clientId: string, dto: GenerateQuizDto) {
     // Tugatilmagan quiz bormi tekshirish
@@ -137,6 +141,7 @@ export class QuizzesService {
       });
       await this.repo.completeQuiz(quizId, correctAnswers);
       await this.repo.updateQuestions(quizId, updatedQuestions);
+      await this.scoresService.saveScore(clientId, quiz.collectionId, 'quiz', correctAnswers, quiz.totalQuestions);
     } else {
       await this.repo.updateQuestions(quizId, updatedQuestions);
     }
@@ -175,6 +180,7 @@ export class QuizzesService {
     ).length;
 
     await this.repo.completeQuiz(quizId, correctAnswers);
+    await this.scoresService.saveScore(clientId, quiz.collectionId, 'quiz', correctAnswers, quiz.totalQuestions);
 
     return {
       id: quiz.id,

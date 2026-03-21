@@ -1,9 +1,15 @@
 node_modules/
 dist/
-.env
-.env.*
+.env*
 !.env.example
 *.js.map
 *.d.ts
 !drizzle.config.ts
 .idea/
+.DS_Store
+uploads/avatars/*.jpg
+uploads/avatars/*.png
+
+# Frontend apps (o'zining git repolari bor)
+apps/admin-web/
+apps/client-web/

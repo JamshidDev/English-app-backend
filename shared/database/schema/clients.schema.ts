@@ -14,6 +14,7 @@ export const clients = pgTable(
     lastName: varchar('last_name', { length: 255 }),
     telegramId: varchar('telegram_id', { length: 255 }).notNull().unique(),
     phone: varchar('phone', { length: 20 }),
+    avatarUrl: varchar('avatar_url', { length: 500 }),
     blockedAt: timestamp('blocked_at', { withTimezone: true }),
     createdAt: timestamp('created_at', { withTimezone: true })
       .notNull()

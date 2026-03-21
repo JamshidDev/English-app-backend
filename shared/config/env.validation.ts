@@ -29,6 +29,7 @@ export const clientEnvSchema = z.object({
   REDIS_PORT: z.coerce.number().default(6379),
   REDIS_PASSWORD: z.string().default(''),
   CLIENT_PORT: z.coerce.number().default(3000),
+  TELEGRAM_BOT_TOKEN: z.string().default(''),
   NODE_ENV: z
     .enum(['development', 'production', 'test'])
     .default('development'),

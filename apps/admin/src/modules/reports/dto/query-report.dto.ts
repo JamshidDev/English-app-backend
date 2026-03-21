@@ -1,0 +1,25 @@
+import { IsOptional, IsString, IsInt, Min, IsIn } from 'class-validator';
+import { Type } from 'class-transformer';
+import { ApiPropertyOptional } from '@nestjs/swagger';
+
+export class QueryReportDto {
+  @ApiPropertyOptional({ enum: ['pending', 'fixed', 'skipped'] })
+  @IsOptional()
+  @IsString()
+  @IsIn(['pending', 'fixed', 'skipped'])
+  status?: string;
+
+  @ApiPropertyOptional({ default: 1 })
+  @IsOptional()
+  @Type(() => Number)
+  @IsInt()
+  @Min(1)
+  page: number = 1;
+
+  @ApiPropertyOptional({ default: 20 })
+  @IsOptional()
+  @Type(() => Number)
+  @IsInt()
+  @Min(1)
+  pageSize: number = 20;
+}

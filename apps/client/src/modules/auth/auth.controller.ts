@@ -1,9 +1,12 @@
-import { Controller, Post, Body, HttpCode, HttpStatus } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiOkResponse, ApiCreatedResponse } from '@nestjs/swagger';
+import { Controller, Post, Get, Body, HttpCode, HttpStatus, UseGuards } from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiOkResponse, ApiCreatedResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { ClientLoginDto } from './dto/login.dto';
 import { ClientRegisterDto } from './dto/register.dto';
 import { ClientLoginApiResponseDto, ClientCheckApiResponseDto } from './dto/auth-response.dto';
+import { ClientJwtAuthGuard } from './guards/client-jwt-auth.guard';
+import { GetCurrentClient } from './decorators/current-client.decorator';
+import { CurrentClient } from '@shared/types';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -31,5 +34,24 @@ export class AuthController {
   @ApiOkResponse({ type: ClientLoginApiResponseDto })
   async login(@Body() dto: ClientLoginDto) {
     return this.authService.login(dto);
+  }
+
+  @Get('profile')
+  @ApiBearerAuth()
+  @UseGuards(ClientJwtAuthGuard)
+  @ApiOperation({ summary: 'Profil ma\'lumotlari' })
+  async getProfile(@GetCurrentClient() client: CurrentClient) {
+    return this.authService.getProfile(client.id);
+  }
+
+  @Post('refresh-avatar')
+  @ApiBearerAuth()
+  @UseGuards(ClientJwtAuthGuard)
+  @ApiOperation({ summary: 'Telegram avatarni qayta yuklash' })
+  async refreshAvatar(
+    @GetCurrentClient() client: CurrentClient,
+    @Body() body: { photoUrl?: string },
+  ) {
+    return this.authService.refreshAvatar(client.id, body.photoUrl);
   }
 }

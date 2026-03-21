@@ -1,5 +1,7 @@
 import { defineConfig } from 'drizzle-kit';
-import 'dotenv/config';
+import * as dotenv from 'dotenv';
+
+dotenv.config({ path: `.env.${process.env.NODE_ENV || 'development'}` });
 
 export default defineConfig({
   schema: './shared/database/schema/index.ts',

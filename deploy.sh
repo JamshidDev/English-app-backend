@@ -18,7 +18,7 @@ npm run build
 
 # 4. Push database schema
 echo "🗄️ Pushing database schema..."
-npx drizzle-kit push
+NODE_ENV=production npx drizzle-kit push
 
 # 5. Restart PM2
 echo "🔄 Restarting PM2 apps..."

@@ -4,6 +4,8 @@ import { CollectionsService } from './collections.service';
 import { QueryCollectionDto } from './dto/query-collection.dto';
 import { CollectionPaginatedApiResponseDto } from './dto/collection-response.dto';
 import { ClientJwtAuthGuard } from '../auth/guards/client-jwt-auth.guard';
+import { GetCurrentClient } from '../auth/decorators/current-client.decorator';
+import { CurrentClient } from '@shared/types';
 
 @ApiTags('Collections')
 @ApiBearerAuth()
@@ -14,11 +16,14 @@ export class CollectionsController {
 
   @Get()
   @ApiOperation({
-    summary: 'Get public collections by category',
-    description: 'Returns public collections for a given categoryId with pagination and word count.',
+    summary: 'Get public collections by category with stars',
+    description: 'Returns public collections with word count and star status per module.',
   })
   @ApiOkResponse({ type: CollectionPaginatedApiResponseDto })
-  async findByCategoryId(@Query() query: QueryCollectionDto) {
-    return this.service.findByCategoryId(query);
+  async findByCategoryId(
+    @GetCurrentClient() client: CurrentClient,
+    @Query() query: QueryCollectionDto,
+  ) {
+    return this.service.findByCategoryId(query, client.id);
   }
 }

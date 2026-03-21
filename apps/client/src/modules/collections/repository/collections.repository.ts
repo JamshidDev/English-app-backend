@@ -7,8 +7,9 @@ import { collections } from '@shared/database/schema';
 export class CollectionsRepository {
   constructor(@Inject(DRIZZLE) private db: DrizzleDB) {}
 
-  async findPublicByCategoryId(options: {
+  async findPublicByCategoryIdWithStars(options: {
     categoryId: string;
+    clientId: string;
     page: number;
     pageSize: number;
     search?: string;
@@ -34,6 +35,9 @@ export class CollectionsRepository {
         name: collections.name,
         createdAt: collections.createdAt,
         wordCount: sql<number>`(SELECT count(*)::int FROM words w WHERE w.collection_id = collections.id AND w.deleted_at IS NULL)`.as('word_count'),
+        vocabularyStar: sql<boolean>`COALESCE((SELECT s.score = 1 FROM scores s WHERE s.client_id = ${options.clientId} AND s.collection_id = collections.id AND s.type = 'vocabulary'), false)`.as('vocabulary_star'),
+        writingStar: sql<boolean>`COALESCE((SELECT s.score = 1 FROM scores s WHERE s.client_id = ${options.clientId} AND s.collection_id = collections.id AND s.type = 'writing'), false)`.as('writing_star'),
+        quizStar: sql<boolean>`COALESCE((SELECT s.score = 1 FROM scores s WHERE s.client_id = ${options.clientId} AND s.collection_id = collections.id AND s.type = 'quiz'), false)`.as('quiz_star'),
       })
       .from(collections)
       .where(and(...conditions))

@@ -9,12 +9,18 @@ import { CollectionsModule } from './modules/collections/collections.module';
 import { ClientCategoriesModule } from './modules/client-categories/client-categories.module';
 import { QuizzesModule } from './modules/quizzes/quizzes.module';
 import { VocabularyModule } from './modules/vocabulary/vocabulary.module';
+import { ScoresModule } from './modules/scores/scores.module';
+import { WritingsModule } from './modules/writings/writings.module';
+import { SavedModule } from './modules/saved/saved.module';
+import { ReportsModule } from './modules/reports/reports.module';
+import { ClientNotificationsModule } from './modules/notifications/notifications.module';
+import { ActivityModule } from './modules/activity/activity.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: '.env',
+      envFilePath: `.env.${process.env.NODE_ENV || 'development'}`,
       validate: validateClientEnv,
     }),
     ClientDatabaseModule,
@@ -29,6 +35,12 @@ import { VocabularyModule } from './modules/vocabulary/vocabulary.module';
     ClientCategoriesModule,
     QuizzesModule,
     VocabularyModule,
+    ScoresModule,
+    WritingsModule,
+    SavedModule,
+    ReportsModule,
+    ClientNotificationsModule,
+    ActivityModule,
   ],
 })
 export class ClientModule {}

@@ -40,8 +40,8 @@ jobs:
             git pull origin main
             npm install
             npm run build
-            npx drizzle-kit push --force
-            pm2 reload ecosystem.config.js
+            NODE_ENV=production npx drizzle-kit push --force
+            pm2 reload ecosystem.config.js --env production
             echo "Deploy completed!"
 
   notify:

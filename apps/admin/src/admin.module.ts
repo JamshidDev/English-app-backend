@@ -8,13 +8,15 @@ import { CollectionsModule } from './modules/collections/collections.module';
 import { WordsModule } from './modules/words/words.module';
 import { ClientsModule } from './modules/clients/clients.module';
 import { ClientCategoriesModule } from './modules/client-categories/client-categories.module';
+import { AdminReportsModule } from './modules/reports/reports.module';
+import { AdminNotificationsModule } from './modules/notifications/notifications.module';
 import { validateAdminEnv } from '@shared/config/env.validation';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: '.env',
+      envFilePath: `.env.${process.env.NODE_ENV || 'development'}`,
       validate: validateAdminEnv,
     }),
     AdminDatabaseModule,
@@ -29,6 +31,8 @@ import { validateAdminEnv } from '@shared/config/env.validation';
     WordsModule,
     ClientsModule,
     ClientCategoriesModule,
+    AdminReportsModule,
+    AdminNotificationsModule,
   ],
 })
 export class AdminModule {}

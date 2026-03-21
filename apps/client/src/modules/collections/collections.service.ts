@@ -7,10 +7,11 @@ import { PaginatedResponse } from '@shared/types';
 export class CollectionsService {
   constructor(private readonly repo: CollectionsRepository) {}
 
-  async findByCategoryId(query: QueryCollectionDto): Promise<PaginatedResponse<any>> {
+  async findByCategoryId(query: QueryCollectionDto, clientId: string): Promise<PaginatedResponse<any>> {
     const [data, total] = await Promise.all([
-      this.repo.findPublicByCategoryId({
+      this.repo.findPublicByCategoryIdWithStars({
         categoryId: query.categoryId,
+        clientId,
         page: query.page,
         pageSize: query.pageSize,
         search: query.search,
@@ -23,8 +24,18 @@ export class CollectionsService {
 
     const pageCount = Math.ceil(total / query.pageSize);
 
+    const dataWithStars = data.map((item) => ({
+      ...item,
+      stars: {
+        vocabulary: item.vocabularyStar,
+        writing: item.writingStar,
+        quiz: item.quizStar,
+      },
+      totalStars: [item.vocabularyStar, item.writingStar, item.quizStar].filter(Boolean).length,
+    }));
+
     return {
-      data,
+      data: dataWithStars,
       meta: {
         page: query.page,
         pageSize: query.pageSize,

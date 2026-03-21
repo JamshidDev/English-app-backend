@@ -24,4 +24,10 @@ export class ClientRegisterDto {
   @IsString()
   @MaxLength(20)
   phone?: string;
+
+  @ApiPropertyOptional({ description: 'Telegram avatar URL' })
+  @IsOptional()
+  @IsString()
+  @MaxLength(500)
+  photoUrl?: string;
 }
