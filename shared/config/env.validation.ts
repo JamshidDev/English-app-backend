@@ -13,6 +13,7 @@ export const adminEnvSchema = z.object({
   JWT_SECRET: z.string().min(8),
   JWT_EXPIRATION: z.string().default('24h'),
   ADMIN_PORT: z.coerce.number().default(3001),
+  GOOGLE_TTS_API_KEY: z.string().default(''),
   NODE_ENV: z
     .enum(['development', 'production', 'test'])
     .default('development'),

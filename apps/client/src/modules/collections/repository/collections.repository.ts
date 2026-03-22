@@ -33,6 +33,7 @@ export class CollectionsRepository {
         id: collections.id,
         categoryId: collections.categoryId,
         name: collections.name,
+        isNew: collections.isNew,
         createdAt: collections.createdAt,
         wordCount: sql<number>`(SELECT count(*)::int FROM words w WHERE w.collection_id = collections.id AND w.deleted_at IS NULL)`.as('word_count'),
         vocabularyStar: sql<boolean>`COALESCE((SELECT s.score = 1 FROM scores s WHERE s.client_id = ${options.clientId} AND s.collection_id = collections.id AND s.type = 'vocabulary'), false)`.as('vocabulary_star'),
@@ -67,5 +68,14 @@ export class CollectionsRepository {
       .from(collections)
       .where(and(...conditions));
     return Number(result.total);
+  }
+
+  async findById(id: string) {
+    const [result] = await this.db
+      .select()
+      .from(collections)
+      .where(and(eq(collections.id, id), isNull(collections.deletedAt)))
+      .limit(1);
+    return result ?? null;
   }
 }

@@ -41,7 +41,7 @@ export class VocabularyController {
     @GetCurrentClient() client: CurrentClient,
     @Body() dto: LearnWordDto,
   ) {
-    await this.service.unlearnWord(client.id, dto.wordId);
+    await this.service.unlearnWord(client.id, dto.wordId, dto.collectionId);
     return { success: true };
   }
 

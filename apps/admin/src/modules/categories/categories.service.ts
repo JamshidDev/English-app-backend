@@ -113,5 +113,6 @@ export class CategoriesService {
 
   private async invalidateCache() {
     await this.redis.delByPattern(`${CACHE_PREFIX}:*`);
+    await this.redis.del('cache:categories');
   }
 }

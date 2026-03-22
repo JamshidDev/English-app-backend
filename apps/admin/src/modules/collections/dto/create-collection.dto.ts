@@ -22,4 +22,9 @@ export class CreateCollectionDto {
   @IsOptional()
   @IsBoolean()
   public?: boolean;
+
+  @ApiPropertyOptional({ example: false, default: false })
+  @IsOptional()
+  @IsBoolean()
+  isNew?: boolean;
 }

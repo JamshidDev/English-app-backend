@@ -22,6 +22,7 @@ export const words = pgTable('words', {
   example: text('example'),
   exampleTranslate: jsonb('example_translate')
     .$type<{ uz: string; ru: string }>(),
+  audioUrl: varchar('audio_url', { length: 500 }),
   createdAt: timestamp('created_at', { withTimezone: true })
     .notNull()
     .defaultNow(),

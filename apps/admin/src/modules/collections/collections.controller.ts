@@ -59,4 +59,12 @@ export class CollectionsController {
   async togglePublic(@Param('id', ParseUUIDPipe) id: string) {
     return this.service.togglePublic(id);
   }
+
+  @Patch(':id/toggle-new')
+  @ApiOperation({ summary: 'Toggle isNew status' })
+  @ApiParam({ name: 'id', format: 'uuid' })
+  @ApiOkResponse({ type: CollectionApiResponseDto })
+  async toggleNew(@Param('id', ParseUUIDPipe) id: string) {
+    return this.service.toggleNew(id);
+  }
 }

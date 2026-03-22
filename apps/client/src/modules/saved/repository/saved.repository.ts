@@ -43,6 +43,7 @@ export class SavedRepository {
         transcription: words.transcription,
         example: words.example,
         exampleTranslate: words.exampleTranslate,
+        audioUrl: words.audioUrl,
       })
       .from(savedWords)
       .innerJoin(words, eq(savedWords.wordId, words.id))

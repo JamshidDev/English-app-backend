@@ -79,6 +79,23 @@ export class WordsRepository {
     return result;
   }
 
+  async findByCollectionId(collectionId: string) {
+    return this.db
+      .select()
+      .from(words)
+      .where(and(eq(words.collectionId, collectionId), isNull(words.deletedAt)))
+      .orderBy(asc(words.createdAt));
+  }
+
+  async updateAudioUrl(id: string, audioUrl: string) {
+    const [result] = await this.db
+      .update(words)
+      .set({ audioUrl })
+      .where(eq(words.id, id))
+      .returning();
+    return result;
+  }
+
   async softDelete(id: string) {
     const [result] = await this.db
       .update(words)

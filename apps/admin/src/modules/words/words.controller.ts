@@ -25,8 +25,20 @@ export class WordsController {
     return this.service.create(dto);
   }
 
+  @Post('generate-audio')
+  @ApiOperation({ summary: 'Generate audio for all words in a collection' })
+  async generateAudio(@Body() body: { collectionId: string }) {
+    return this.service.generateAudio(body.collectionId);
+  }
+
+  @Post(':id/generate-audio')
+  @ApiParam({ name: 'id', format: 'uuid' })
+  @ApiOperation({ summary: 'Generate or regenerate audio for a single word' })
+  async generateSingleAudio(@Param('id', ParseUUIDPipe) id: string) {
+    return this.service.generateSingleAudio(id);
+  }
+
   @Get()
-  @ApiOperation({ summary: 'Get all words' })
   @ApiOkResponse({ type: WordPaginatedApiResponseDto })
   async findAll(@Query() query: QueryWordDto) {
     return this.service.findAll(query);

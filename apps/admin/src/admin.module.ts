@@ -10,6 +10,8 @@ import { ClientsModule } from './modules/clients/clients.module';
 import { ClientCategoriesModule } from './modules/client-categories/client-categories.module';
 import { AdminReportsModule } from './modules/reports/reports.module';
 import { AdminNotificationsModule } from './modules/notifications/notifications.module';
+import { BackupModule } from './modules/backup/backup.module';
+import { DashboardModule } from './modules/dashboard/dashboard.module';
 import { validateAdminEnv } from '@shared/config/env.validation';
 
 @Module({
@@ -33,6 +35,8 @@ import { validateAdminEnv } from '@shared/config/env.validation';
     ClientCategoriesModule,
     AdminReportsModule,
     AdminNotificationsModule,
+    BackupModule,
+    DashboardModule,
   ],
 })
 export class AdminModule {}

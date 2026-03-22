@@ -9,6 +9,8 @@ dist/
 .DS_Store
 uploads/avatars/*.jpg
 uploads/avatars/*.png
+uploads/audio/*.mp3
+backups/
 
 # Frontend apps (o'zining git repolari bor)
 apps/admin-web/

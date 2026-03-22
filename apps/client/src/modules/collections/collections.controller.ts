@@ -1,4 +1,4 @@
-import { Controller, Get, Query, UseGuards } from '@nestjs/common';
+import { Controller, Get, Param, Query, UseGuards, ParseUUIDPipe } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiOkResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { CollectionsService } from './collections.service';
 import { QueryCollectionDto } from './dto/query-collection.dto';
@@ -25,5 +25,11 @@ export class CollectionsController {
     @Query() query: QueryCollectionDto,
   ) {
     return this.service.findByCategoryId(query, client.id);
+  }
+
+  @Get(':id')
+  @ApiOperation({ summary: 'Get collection by ID' })
+  async findById(@Param('id', ParseUUIDPipe) id: string) {
+    return this.service.findById(id);
   }
 }

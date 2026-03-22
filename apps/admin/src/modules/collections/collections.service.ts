@@ -100,7 +100,19 @@ export class CollectionsService {
     return updated;
   }
 
+  async toggleNew(id: string) {
+    const collection = await this.repo.findById(id);
+    if (!collection) throw new NotFoundException('Collection not found');
+
+    const updated = await this.repo.update(id, {
+      isNew: !collection.isNew,
+    });
+    await this.invalidateCache();
+    return updated;
+  }
+
   private async invalidateCache() {
     await this.redis.delByPattern(`${CACHE_PREFIX}:*`);
+    await this.redis.delByPattern('cache:collections:*');
   }
 }

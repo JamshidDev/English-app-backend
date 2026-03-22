@@ -1,12 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { ScoresRepository } from './repository/scores.repository';
 import { ActivityService } from '../activity/activity.service';
+import { RedisService } from '@shared/redis/redis.service';
+import { CacheKeys, CacheTTL } from '@shared/redis/cache-keys';
 
 @Injectable()
 export class ScoresService {
   constructor(
     private readonly scoresRepository: ScoresRepository,
     private readonly activityService: ActivityService,
+    private readonly redis: RedisService,
   ) {}
 
   calculateScore(percentage: number): number {
@@ -25,8 +28,12 @@ export class ScoresService {
     const percentage =
       totalCount > 0 ? (correctCount / totalCount) * 100 : 0;
     const score = this.calculateScore(percentage);
-    // Activity record qilish (kundalik faollik)
     await this.activityService.recordActivity(clientId);
+
+    // Cache invalidation
+    await this.redis.del(CacheKeys.scores(collectionId, clientId));
+    await this.redis.del(CacheKeys.scoresSummary(clientId));
+    await this.redis.delByPattern(`cache:collections:*`);
 
     return this.scoresRepository.upsertScore(
       clientId,
@@ -38,6 +45,10 @@ export class ScoresService {
   }
 
   async getCollectionScores(clientId: string, collectionId: string) {
+    const cacheKey = CacheKeys.scores(collectionId, clientId);
+    const cached = await this.redis.get<any>(cacheKey);
+    if (cached) return cached;
+
     const rows = await this.scoresRepository.findByClientAndCollection(
       clientId,
       collectionId,
@@ -59,6 +70,7 @@ export class ScoresService {
       }
     }
 
+    await this.redis.set(cacheKey, result, CacheTTL.scores);
     return result;
   }
 

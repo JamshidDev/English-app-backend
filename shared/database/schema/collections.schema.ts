@@ -17,6 +17,7 @@ export const collections = pgTable(
       .references(() => categories.id),
     name: jsonb('name').$type<{ uz: string; ru: string }>().notNull(),
     public: boolean('public').notNull().default(false),
+    isNew: boolean('is_new').notNull().default(false),
     createdAt: timestamp('created_at', { withTimezone: true })
       .notNull()
       .defaultNow(),

@@ -1,18 +1,23 @@
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe, Logger } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { NestExpressApplication } from '@nestjs/platform-express';
+import { join } from 'path';
 import { AdminModule } from './admin.module';
 import { GlobalExceptionFilter } from '@shared/common/filters/global-exception.filter';
 import { ResponseInterceptor } from '@shared/common/interceptors/response.interceptor';
 
 async function bootstrap() {
   const logger = new Logger('AdminApp');
-  const app = await NestFactory.create(AdminModule, {
+  const app = await NestFactory.create<NestExpressApplication>(AdminModule, {
     logger:
       process.env.NODE_ENV === 'production'
         ? ['error', 'warn', 'log']
         : ['error', 'warn', 'log', 'debug', 'verbose'],
   });
+
+  // Static files (uploads)
+  app.useStaticAssets(join(process.cwd(), 'uploads'), { prefix: '/uploads' });
 
   app.setGlobalPrefix('api/admin');
 

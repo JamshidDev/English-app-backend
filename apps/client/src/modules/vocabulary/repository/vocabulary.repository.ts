@@ -16,6 +16,7 @@ export class VocabularyRepository {
         transcription: words.transcription,
         example: words.example,
         exampleTranslate: words.exampleTranslate,
+        audioUrl: words.audioUrl,
         learned: sql<boolean>`CASE WHEN ${clientWords.id} IS NOT NULL THEN true ELSE false END`.as('learned'),
         saved: sql<boolean>`CASE WHEN ${savedWords.id} IS NOT NULL THEN true ELSE false END`.as('saved'),
       })

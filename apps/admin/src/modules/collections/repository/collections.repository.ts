@@ -53,6 +53,7 @@ export class CollectionsRepository {
         categoryId: collections.categoryId,
         name: collections.name,
         public: collections.public,
+        isNew: collections.isNew,
         createdAt: collections.createdAt,
         updatedAt: collections.updatedAt,
         deletedAt: collections.deletedAt,
