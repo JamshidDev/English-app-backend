@@ -7,9 +7,8 @@ import { collections } from '@shared/database/schema';
 export class CollectionsRepository {
   constructor(@Inject(DRIZZLE) private db: DrizzleDB) {}
 
-  async findPublicByCategoryIdWithStars(options: {
+  async findPublicByCategoryId(options: {
     categoryId: string;
-    clientId: string;
     page: number;
     pageSize: number;
     search?: string;
@@ -36,15 +35,35 @@ export class CollectionsRepository {
         isNew: collections.isNew,
         createdAt: collections.createdAt,
         wordCount: sql<number>`(SELECT count(*)::int FROM words w WHERE w.collection_id = collections.id AND w.deleted_at IS NULL)`.as('word_count'),
-        vocabularyStar: sql<boolean>`COALESCE((SELECT s.score = 1 FROM scores s WHERE s.client_id = ${options.clientId} AND s.collection_id = collections.id AND s.type = 'vocabulary'), false)`.as('vocabulary_star'),
-        writingStar: sql<boolean>`COALESCE((SELECT s.score = 1 FROM scores s WHERE s.client_id = ${options.clientId} AND s.collection_id = collections.id AND s.type = 'writing'), false)`.as('writing_star'),
-        quizStar: sql<boolean>`COALESCE((SELECT s.score = 1 FROM scores s WHERE s.client_id = ${options.clientId} AND s.collection_id = collections.id AND s.type = 'quiz'), false)`.as('quiz_star'),
       })
       .from(collections)
       .where(and(...conditions))
       .orderBy(asc(collections.createdAt))
       .limit(options.pageSize)
       .offset(offset);
+  }
+
+  async findStarsByClientAndCategory(clientId: string, collectionIds: string[]) {
+    if (collectionIds.length === 0) return {};
+
+    const result = await this.db.execute(sql`
+      SELECT
+        s.collection_id,
+        s.type,
+        s.score
+      FROM scores s
+      WHERE s.client_id = ${clientId}
+        AND s.collection_id = ANY(${collectionIds})
+    `);
+
+    const starsMap: Record<string, { vocabulary: boolean; writing: boolean; quiz: boolean }> = {};
+    for (const row of result.rows as any[]) {
+      if (!starsMap[row.collection_id]) {
+        starsMap[row.collection_id] = { vocabulary: false, writing: false, quiz: false };
+      }
+      starsMap[row.collection_id][row.type as 'vocabulary' | 'writing' | 'quiz'] = row.score === 1;
+    }
+    return starsMap;
   }
 
   async countPublicByCategoryId(options: {

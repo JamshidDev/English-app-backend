@@ -1,6 +1,7 @@
 export const CacheKeys = {
   categories: () => 'cache:categories',
   collections: (categoryId: string) => `cache:collections:${categoryId}`,
+  collectionStars: (categoryId: string, clientId: string) => `cache:collection-stars:${categoryId}:${clientId}`,
   vocabulary: (collectionId: string, clientId: string) => `cache:vocab:${collectionId}:${clientId}`,
   scores: (collectionId: string, clientId: string) => `cache:scores:${collectionId}:${clientId}`,
   scoresSummary: (clientId: string) => `cache:scores:summary:${clientId}`,

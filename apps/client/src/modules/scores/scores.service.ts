@@ -33,7 +33,7 @@ export class ScoresService {
     // Cache invalidation
     await this.redis.del(CacheKeys.scores(collectionId, clientId));
     await this.redis.del(CacheKeys.scoresSummary(clientId));
-    await this.redis.delByPattern(`cache:collections:*`);
+    await this.redis.delByPattern('cache:collection-stars:*:' + clientId);
 
     return this.scoresRepository.upsertScore(
       clientId,

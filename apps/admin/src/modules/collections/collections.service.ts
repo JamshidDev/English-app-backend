@@ -114,5 +114,6 @@ export class CollectionsService {
   private async invalidateCache() {
     await this.redis.delByPattern(`${CACHE_PREFIX}:*`);
     await this.redis.delByPattern('cache:collections:*');
+    await this.redis.delByPattern('cache:collection-stars:*');
   }
 }
