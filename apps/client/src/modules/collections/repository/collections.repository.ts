@@ -53,7 +53,7 @@ export class CollectionsRepository {
         s.score
       FROM scores s
       WHERE s.client_id = ${clientId}
-        AND s.collection_id = ANY(${collectionIds})
+        AND s.collection_id = ANY(ARRAY[${sql.join(collectionIds.map(id => sql`${id}::uuid`), sql`, `)}])
     `);
 
     const starsMap: Record<string, { vocabulary: boolean; writing: boolean; quiz: boolean }> = {};
